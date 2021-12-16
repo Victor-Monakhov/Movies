@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {HomeComponent} from "./home.component";
+import {HomeComponent} from "./components/home.component";
 import {RouterModule, Routes} from "@angular/router";
+import {NAVIGATE} from "../../app.config";
 
 const routes: Routes = [
   {
-    path: '',
+    path: NAVIGATE.HOME,
     component: HomeComponent
   },
 ];

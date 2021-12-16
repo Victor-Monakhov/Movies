@@ -1,0 +1,49 @@
+@import 'src/assets/styles/variables';
+@import 'src/assets/styles/mixins';
+.nav-bar{
+  display: flex;
+  height: 60px;
+  background-color: #474d59;
+  align-items: center;
+  padding: 0 20px;
+  position: relative;
+  .logo{
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .title{
+    color: #ffffff;
+    font-size: 1rem;
+  }
+  .header-btn{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #474d59;
+    border: 1px solid #ffffff;
+    height: 30px;
+    color: #ffffff;
+    position: absolute;
+    right: 20px;
+    .my-account{
+      opacity: 0.5;
+      font-size: 0.8rem;
+      margin: 0 5px;
+      @include media-visible($sm, none);
+    }
+    .angle-down{
+      width: 20px;
+      height: 15px;
+      margin: 0 5px;
+    }
+  }
+  .header-btn:hover{
+    cursor: pointer;
+  }
+  .header-btn:active{
+    border-width: 2px;
+  }
+}

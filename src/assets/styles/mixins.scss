@@ -1,0 +1,10 @@
+@mixin media-visible ($screen_width, $display){
+  @media screen and (max-width: $screen_width) {
+    display: $display;
+  }
+}
+@mixin media-unvisible ($screen_width){
+  @media screen and (max-width: $screen_width) {
+    display: none;
+  }
+}

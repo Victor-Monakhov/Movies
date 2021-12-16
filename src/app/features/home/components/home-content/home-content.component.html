@@ -1,0 +1,10 @@
+<div class="wrapper" *ngIf="loadingFlag;">
+    <img
+      *ngFor="let movie of contentService.content.results;"
+      class="movie-img"
+      src="{{'http://image.tmdb.org/t/p/w342' + movie.poster_path}}"
+      alt="{{movie.title}}"
+      >
+</div>
+<p *ngIf="!loadingFlag">Loading...</p>
+
