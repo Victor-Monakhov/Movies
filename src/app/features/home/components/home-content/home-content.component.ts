@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {HomeContentService} from "../../../../shared/services/home-content/home-content.service";
+import {delay, finalize, map, Observable, tap} from "rxjs";
+import {Movie} from "../../../../shared/models/home-content";
 
 @Component({
   selector: 'app-home-content',
@@ -8,13 +10,22 @@ import {HomeContentService} from "../../../../shared/services/home-content/home-
 })
 export class HomeContentComponent implements OnInit {
 
-  loadingFlag: boolean = false;
+  public currentPage: number = 1;
+  public lastPage: number = 83;
+  public movies$: Observable<Movie[]> | undefined;
 
-  constructor(public contentService: HomeContentService) { }
+  constructor(public contentService: HomeContentService) {
+  }
 
-  ngOnInit(): void {
-    this.contentService.getContent().subscribe(() => {
-      this.loadingFlag = true;
-    });
+  public ngOnInit(): void {
+    this.setMovies(this.currentPage);
+  }
+
+  public setMovies(page: number = 1){
+    this.movies$ = this.contentService.getContent(page).pipe(
+      //delay(1000),
+      tap((response) => this.currentPage = response.page),
+      map((response) => response.results)
+    );
   }
 }

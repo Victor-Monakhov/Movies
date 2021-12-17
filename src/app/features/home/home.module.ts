@@ -4,7 +4,7 @@ import { HomeComponent } from './components/home.component';
 import {HomeRoutingModule} from "./home-routing.module";
 import { HomeHeaderComponent } from './components/home-header/home-header.component';
 import {HomeContentComponent} from "./components/home-content/home-content.component";
-import {HomeContentService} from "../../shared/services/home-content/home-content.service";
+import {HomeContentPaginatorComponent} from "./components/home-content-paginator/home-content-paginator.component";
 
 
 
@@ -12,7 +12,8 @@ import {HomeContentService} from "../../shared/services/home-content/home-conten
   declarations: [
     HomeComponent,
     HomeHeaderComponent,
-    HomeContentComponent
+    HomeContentComponent,
+    HomeContentPaginatorComponent
   ],
   imports: [
     CommonModule,

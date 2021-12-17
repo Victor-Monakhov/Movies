@@ -1,15 +1,47 @@
 @import 'variables.scss';
+@import "animations.scss";
 .wrapper {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
   margin: 10px 20px 0 20px;
-  justify-content: space-between;
-  column-gap: 15px;
-  row-gap: 15px;
+  .movie{
+    width: 100%;
+    box-shadow: 0 0 6px 2px #000000;
+    position: relative;
+    overflow: hidden;
+    .movie-img{
+      width: 100%;
+      height: 100%;
+    }
+    .tooltip{
+      display: grid;
+      visibility: hidden;
+      background-color: #474d59;
+      position: absolute;
+      top: 70%;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0.8;
+      color: #ffffff;
+      font-size: 1rem;
+      padding: 10px;
+      grid-template-columns: auto auto;
+      grid-column-gap: 15px;
+      overflow: hidden;
+      span{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .movie:hover>.tooltip{
+    visibility: visible;
+    animation: tooltip_go_up 0.8s ease-out 1 both;
+  }
 }
 
-  .movie-img{
-    width: 15.8%;
-    border-radius: 10px;
-    box-shadow: 0 0 6px 2px #000000;
-  }
+

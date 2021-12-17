@@ -2,7 +2,7 @@ export interface MoviesDates{
   maximum: string;
   minimum: string;
 }
-export interface MoviesPage{
+export interface MoviesResponse {
   dates: MoviesDates;
   page: number;
   results: Movie[];
