@@ -12,6 +12,10 @@
     background-color: #f2f3f5;
     width: 90px;
     border: 1px solid #dddee3;
+    cursor: pointer;
+  }
+  .disable{
+    color: #adb0b5;
   }
   .small-btn{
     width: auto;
@@ -19,9 +23,6 @@
   }
   .first-page-btn{
     font-weight: bold;
-    font-size: 1.2rem;
-  }
-  .paginator-btn:active{
-    border-width: 2px;
+    font-size: 1.1rem;
   }
 }

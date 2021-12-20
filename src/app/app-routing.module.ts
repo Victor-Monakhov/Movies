@@ -4,7 +4,7 @@ import {NAVIGATE} from "./app.config";
 
 const routes: Routes = [
   {
-    path: NAVIGATE.HOME,
+    path: '',
     redirectTo: `/${NAVIGATE.HOME}`,
     pathMatch: 'full',
   },
