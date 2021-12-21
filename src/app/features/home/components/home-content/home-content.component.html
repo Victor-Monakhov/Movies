@@ -1,6 +1,6 @@
 <h2>Latest Releases</h2>
-<div class="wrapper" *ngIf="(movies$ | async) as movies; else loader">
-  <div class="movie" *ngFor="let movie of movies;">
+<div class="wrapper" *ngIf="(contentService.movies$ | async) as movies; else loader">
+  <div class="movie" *ngFor="let movie of movies;" routerLink="/list/{{currentPage}}/{{movie.id}}">
     <img
       class="movie-img"
       src="{{'http://image.tmdb.org/t/p/w342' + movie.poster_path}}"
@@ -23,6 +23,7 @@
   [currentPage]="currentPage"
   [lastPage]="lastPage"
   (clickEvent)="setMovies($event)"></app-home-content-paginator>
+<router-outlet></router-outlet>
 <ng-template #loader>
   <p>Loading...</p>
 </ng-template>
