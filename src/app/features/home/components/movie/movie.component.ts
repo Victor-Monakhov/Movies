@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Movie} from "../../../../shared/models/home-content";
-import {filter, map, Observable} from "rxjs";
+import {MovieResponse} from "../../../../shared/models/home-content";
+import {switchMap} from "rxjs";
 import {HomeContentService} from "../../../../shared/services/home-content/home-content.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-movie',
@@ -11,18 +11,43 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class MovieComponent implements OnInit {
 
-  public currentMovie: Movie | undefined;
+  public currentMovie: MovieResponse | undefined;
 
-  constructor(public contentService: HomeContentService, public activateRoute: ActivatedRoute) {
+  constructor(
+    public contentService: HomeContentService,
+    public activateRoute: ActivatedRoute,
+    public router: Router) {
 
   }
 
-  ngOnInit(): void {
-    this.activateRoute.params.subscribe(params=>{
-       this.contentService.movies$?.subscribe( movies =>{
-         this.currentMovie = movies?.find(movie => movie.id == params['id']);
-      });
+  public ngOnInit(): void {
+    this.activateRoute.params.pipe(
+      switchMap(params => this.contentService.getMovie(params['id'])))
+      .subscribe(movie => {
+      this.currentMovie = movie;
     });
   }
 
+  public onNextMovie(){
+    let nextMovieId: number | undefined = 0;
+    let index: number = this.contentService.moviesSubject.value
+      ?.findIndex((movie) => {
+        return movie.id === this.currentMovie?.id
+      }) ?? -1;
+    if(index + 1 === this.contentService.moviesSubject.value?.length) {
+      this.contentService.getContent(this.contentService.currentPage + 1)
+        .subscribe(movies =>{
+        this.contentService.moviesSubject.next(movies);
+          index = 0;
+          nextMovieId = this.contentService.moviesSubject.getValue()?.[index].id;
+          this.router.navigate(['/movie', nextMovieId]);
+      });
+    } else{
+      nextMovieId = this.contentService.moviesSubject.getValue()?.[index + 1].id;
+      this.router.navigate(['/movie', nextMovieId]);
+    }
+  }
+  public onBackToList(){
+    this.router.navigate(['/list', this.contentService.currentPage]);
+  }
 }

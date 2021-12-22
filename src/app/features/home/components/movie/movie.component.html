@@ -1,8 +1,19 @@
-<div class="wrapper">
-  <div class="background-container">
-    <img class="background-img" src="{{'http://image.tmdb.org/t/p/w342' + currentMovie?.backdrop_path}}" alt="image">
+<div class="wrapper"  *ngIf="currentMovie as movie; else loader">
+    <img class="background-img" src="{{'http://image.tmdb.org/t/p/w342' + movie?.backdrop_path}}" alt="image">
     <div class="background">
-
+        <div class="navigation">
+          <div class="nav-item" (click)="onBackToList()">
+            <i class="far fa-clock"></i>
+            <p>Back to list</p>
+          </div>
+          <div class="nav-item" (click)="onNextMovie()">
+            <p>Next Movie</p>
+            <i class="far fa-clock"></i>
+          </div>
+        </div>
     </div>
-  </div>
+  <div style="display: flex; width: 200px; height: 1000px; background-color: #ffffff"></div>
 </div>
+<ng-template #loader>
+  <p>Loading...</p>
+</ng-template>

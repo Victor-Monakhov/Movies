@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HomeContentService} from "../../../../shared/services/home-content/home-content.service";
-import {delay, filter, map, Observable, tap} from "rxjs";
-import {Movie} from "../../../../shared/models/home-content";
+import {delay, filter, map, Observable, switchMap, tap} from "rxjs";
+import {MovieResponse} from "../../../../shared/models/home-content";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -11,24 +11,23 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class HomeContentComponent implements OnInit {
 
-  public currentPage: number = 1;
   public lastPage: number = 83;
-  //public movies$: Observable<Movie[]> | undefined;
-  public currentMovie: Movie | undefined;
 
   constructor(public contentService: HomeContentService, public activateRoute: ActivatedRoute, public router: Router) {
   }
 
   public ngOnInit(): void {
-    this.activateRoute.params.subscribe(params=>{
-      this.contentService.movies$ = this.contentService.getContent(params['page']).pipe(
-        tap((response) => this.currentPage = response.page ),
-        map((response) => response.results)
-      );
-    });
+    this.activateRoute.params.pipe(
+      switchMap(params => this.contentService.getContent(params['page'])))
+      .subscribe(movies => {
+        this.contentService.moviesSubject.next(movies)
+      });
   }
 
   public setMovies(page: number = 1){
     this.router.navigate(['/list', page]);
+  }
+  public onMovie(id: number){
+    this.router.navigate(['/movie', id]);
   }
 }

@@ -5,13 +5,6 @@ import {NAVIGATE} from "../../app.config";
 import {HomeContentComponent} from "./components/home-content/home-content.component";
 import {MovieComponent} from "./components/movie/movie.component";
 
-const movieRoutes: Routes = [
-  {
-    path: ':id',
-    component: MovieComponent,
-  }
-]
-
 const routes: Routes = [
   {
     path: '',
@@ -21,7 +14,6 @@ const routes: Routes = [
   {
     path: ':page',
     component: HomeContentComponent,
-    children: movieRoutes
   },
 ];
 

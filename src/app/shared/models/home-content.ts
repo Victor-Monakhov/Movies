@@ -2,13 +2,13 @@ export interface MoviesDates{
   maximum: string;
   minimum: string;
 }
-export interface MoviesResponse {
+export interface PageResponse {
   dates: MoviesDates;
   page: number;
-  results: Movie[];
+  results: MovieResponse[];
 }
 
-export interface Movie{
+export interface MovieResponse {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
