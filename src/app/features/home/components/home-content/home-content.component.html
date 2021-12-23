@@ -1,5 +1,5 @@
 <h2>Latest Releases</h2>
-<div class="wrapper" *ngIf="contentService.moviesSubject.value as movies; else loader">
+<div class="wrapper" *ngIf="contentService.moviesSubject | async as movies; else loader">
   <div class="movie" *ngFor="let movie of movies;" (click)="onMovie(movie.id)">
     <img
       class="movie-img"
@@ -21,7 +21,7 @@
 </div>
 <app-home-content-paginator
   [currentPage]="contentService.currentPage"
-  [lastPage]="lastPage"
+  [lastPage]="contentService.lastPage"
   (clickEvent)="setMovies($event)"></app-home-content-paginator>
 <!--<router-outlet></router-outlet>-->
 <ng-template #loader>

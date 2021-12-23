@@ -6,7 +6,7 @@ import {MovieComponent} from "./features/home/components/movie/movie.component";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: `/${NAVIGATE.HOME}`,
+    redirectTo: `/${NAVIGATE.HOME}/1`,
     pathMatch: 'full',
   },
   {
