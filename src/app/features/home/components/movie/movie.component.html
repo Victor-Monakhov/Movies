@@ -1,14 +1,16 @@
-<div class="wrapper"  *ngIf="currentMovie as movie; else loader">
+<div class="wrapper"  *ngIf="currentMovie | async as movie; else loader">
     <img class="background-img" src="{{'http://image.tmdb.org/t/p/w342' + movie?.backdrop_path}}" alt="backdrop-img">
     <div class="background">
         <div class="navigation">
           <div class="nav-item" (click)="onBackToList()">
-            <i class="far fa-clock"></i>
+            <i class="fas fa-chevron-circle-left"></i>
             <p>Back to list</p>
           </div>
-          <div class="nav-item" (click)="onNextMovie()">
+          <div class="nav-item"
+               [ngStyle]="activateRoute.snapshot.queryParams['page'] ? {'display' : 'flex'} : {'display' : 'none'}"
+               (click)="onNextMovie()">
             <p>Next Movie</p>
-            <i class="far fa-clock"></i>
+            <i class="fas fa-chevron-circle-right"></i>
           </div>
         </div>
         <div class="movie">
@@ -16,21 +18,23 @@
             <img src="{{'http://image.tmdb.org/t/p/w342' + movie?.poster_path}}" alt="movie-poster">
           </div>
           <button class="to-favourite">Add to favourite</button>
-            <div class="movie-info">
-              <h1 >{{movie?.title + ' '}}({{movie.release_date | date : 'y'}})</h1>
-              <div class="rate-release-info">
-                <p>Score:</p>
-                <hr>
-                <p>Rating:</p>
-                <hr>
-                <p>Release Date:</p>
-              </div>
+          <div class="movie-info">
+            <h1 >{{movie?.title + ' '}}({{movie.release_date | date : 'y'}})</h1>
+            <div class="rate-release-info">
+              <p class="rate-release">Score:</p>
               <hr>
+              <p class="rate-release">Rating:</p>
+              <hr>
+              <p class="rate-release">Release Date:</p>
             </div>
+            <hr class = "delimiter">
+            <small>{{movie?.overview}}</small>
+            <hr class = "delimiter">
+          </div>
         </div>
     </div>
   <div style="display: flex; width: 200px; height: 1000px; background-color: #ffffff"></div>
 </div>
 <ng-template #loader>
-  <p>Loading...</p>
+    <div class="loader">Loading...</div>
 </ng-template>

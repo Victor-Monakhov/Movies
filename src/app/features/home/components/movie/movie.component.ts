@@ -1,16 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {MovieResponse} from "../../../../shared/models/home-content";
 import {
-  BehaviorSubject,
-  combineLatest,
-  find,
-  from,
-  fromEvent,
-  map, mergeMap,
+  combineLatest, delay,
+  map,
   Observable,
   of,
-  pipe,
-  Subject,
   switchMap,
   tap
 } from "rxjs";
@@ -24,61 +18,41 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 })
 export class MovieComponent implements OnInit {
 
-  public currentMovie: MovieResponse | undefined;
-
+  public currentMovie: Observable<MovieResponse> | undefined;
+  public checkQueryParams: boolean = true;
   constructor(
     public contentService: HomeContentService,
     public activateRoute: ActivatedRoute,
     public router: Router) {
   }
 
-  public ngOnInit(): void {
-    // combineLatest([this.activateRoute.params, this.activateRoute.queryParams]).pipe(
-    //   switchMap(([params, queryParams]) => {
-    //     let tmp: Observable<any> = new Observable<any>();
-    //     if(this.contentService.moviesSubject.value.length && queryParams['page']){
-    //        return this.contentService.getContent(+queryParams['page']).pipe(
-    //          map(movies =>  {
-    //            this.contentService.moviesSubject.next(movies);
-    //            return movies.find(movie => movie.id === +params['id']) ?? [];
-    //          })
-    //        );
-    //     }
-    //     return this.activateRoute.params;
-    //   }),
-    //   switchMap(params=>{
-    //     //if(params) {
-    //       return this.contentService.getMovie(params['id']);
-    //     //}
-    //     //return new Observable<MovieResponse>();
-    //   })
-    // ).subscribe(movie => {
-    //   if(movie)
-    //   this.currentMovie = movie;
-    // });
+  public ngOnInit(): void{
+    this.currentMovie = this.currMovieInit();
+  }
 
-    combineLatest([this.activateRoute.params, this.activateRoute.queryParams]).pipe(
+  public currMovieInit(): Observable<MovieResponse> {
+    return combineLatest([this.activateRoute.params, this.activateRoute.queryParams]).pipe(
       switchMap(([params, queryParams]) =>{
         const checkMovies = !this.contentService.moviesSubject.value.length;
         if(checkMovies && queryParams['page']) {
-          return of([this.contentService.getContent(+queryParams['page']), params['id']]);
+          return this.contentService.getContent(+queryParams['page']).pipe(
+            tap(movies => {
+              this.contentService.moviesSubject.next(movies)
+            }),
+            map(movies => params['id'])
+          );
         } else {
-          return of([this.contentService.moviesSubject, params['id']]);
+          return of(params['id']);
         }
       }),
-      switchMap((params) =>{
-        console.log(params);
-        return this.contentService.getMovie(params[1]);
-      })
-    ).subscribe(movie => {
-      this.currentMovie = movie;
-    });
+      switchMap(id => this.contentService.getMovie(id).pipe(delay(4000)))
+    )
   }
 
   public onNextMovie(): void{
     let index: number = this.contentService.moviesSubject.value
       ?.findIndex((movie) => {
-        return movie.id === this.currentMovie?.id
+        return  +this.activateRoute.snapshot.params['id'] === movie.id;
       }) ?? -1;
     if(index < 0) return;
     if(index + 1 === this.contentService.moviesSubject.value?.length) {
@@ -98,7 +72,7 @@ export class MovieComponent implements OnInit {
   }
 
   public navigateToNextMovie(index: number): void{
-    let nextMovieId: number | undefined = this.contentService.moviesSubject.getValue()?.[index].id;
+    let nextMovieId: number | undefined = this.contentService.moviesSubject.value[index].id;
     this.router.navigate(['/movie', nextMovieId],{queryParams:{page: this.contentService.currentPage}});
   }
 
