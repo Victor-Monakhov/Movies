@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {NAVIGATE} from "./app.config";
 import {MovieComponent} from "./features/home/components/movie/movie.component";
+import {AccountComponent} from "./features/home/components/account/account.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: `${NAVIGATE.MOVIE}/:id`,
     component: MovieComponent,
+  },
+  {
+    path: `${NAVIGATE.ACCOUNT}`,
+    component: AccountComponent,
   }
 ];
 

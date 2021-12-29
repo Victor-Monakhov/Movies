@@ -27,4 +27,15 @@ export class HomeContentService {
   public getMovie(id: number): Observable<MovieResponse>{
     return this.http.get<MovieResponse>(`https://api.themoviedb.org/3/movie/${id}?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US`);
   }
+
+  public addFavourite(id: number){
+    const favourites: number[] | null = JSON.parse(localStorage.getItem('favourites') as string);
+    if(favourites) {
+      localStorage.removeItem('favourites');
+      favourites.push(id);
+      localStorage.setItem('favourites', JSON.stringify(favourites));
+    } else {
+      localStorage.setItem('favourites', JSON.stringify([id]));
+    }
+  }
 }

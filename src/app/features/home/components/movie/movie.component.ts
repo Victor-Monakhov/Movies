@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {MovieResponse} from "../../../../shared/models/home-content";
 import {
   combineLatest, delay,
@@ -16,10 +16,10 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.scss']
 })
-export class MovieComponent implements OnInit {
+export class MovieComponent implements OnInit{
 
-  public currentMovie: Observable<MovieResponse> | undefined;
-  public checkQueryParams: boolean = true;
+  public currentMovie$: Observable<MovieResponse> | undefined;
+  public nextPageFlag: boolean = false;
   constructor(
     public contentService: HomeContentService,
     public activateRoute: ActivatedRoute,
@@ -27,7 +27,7 @@ export class MovieComponent implements OnInit {
   }
 
   public ngOnInit(): void{
-    this.currentMovie = this.currMovieInit();
+    this.currentMovie$ = this.currMovieInit();
   }
 
   public currMovieInit(): Observable<MovieResponse> {
@@ -45,7 +45,11 @@ export class MovieComponent implements OnInit {
           return of(params['id']);
         }
       }),
-      switchMap(id => this.contentService.getMovie(id).pipe(delay(4000)))
+      switchMap(id => {
+        return this.contentService.getMovie(id).pipe(
+          delay(1500),
+          tap(movie => this.nextPageFlag = false));
+      })
     )
   }
 
@@ -71,7 +75,12 @@ export class MovieComponent implements OnInit {
     }
   }
 
+  public onFavourite(){
+    this.contentService.addFavourite(+this.activateRoute.snapshot.params['id']);
+  }
+
   public navigateToNextMovie(index: number): void{
+    this.nextPageFlag = true;
     let nextMovieId: number | undefined = this.contentService.moviesSubject.value[index].id;
     this.router.navigate(['/movie', nextMovieId],{queryParams:{page: this.contentService.currentPage}});
   }

@@ -4,6 +4,7 @@ import {HomeRoutingModule} from "./home-routing.module";
 import {HomeContentComponent} from "./components/home-content/home-content.component";
 import {HomeContentPaginatorComponent} from "./components/home-content-paginator/home-content-paginator.component";
 import { MovieComponent } from './components/movie/movie.component';
+import { AccountComponent } from './components/account/account.component';
 
 
 
@@ -11,7 +12,8 @@ import { MovieComponent } from './components/movie/movie.component';
   declarations: [
     HomeContentComponent,
     HomeContentPaginatorComponent,
-    MovieComponent
+    MovieComponent,
+    AccountComponent
   ],
   imports: [
     CommonModule,

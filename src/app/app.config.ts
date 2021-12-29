@@ -1,6 +1,7 @@
 export enum NAVIGATE {
   HOME = 'list',
-  MOVIE = 'movie'
+  MOVIE = 'movie',
+  ACCOUNT = 'account'
 }
 export enum WIN_SIZES {
   XS = 0,
