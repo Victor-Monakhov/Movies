@@ -1,4 +1,6 @@
 <h2>My favorite</h2>
 <div class="wrapper">
-
+    <div *ngFor="let movie of favourites$ | async">
+      <img (click)="onLog()" src="{{'http://image.tmdb.org/t/p/w342' + movie.poster_path}}" alt="">
+    </div>
 </div>

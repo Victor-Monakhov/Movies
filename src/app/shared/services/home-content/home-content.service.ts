@@ -11,6 +11,7 @@ export class HomeContentService {
   public currentPage: number = 1;
   public lastPage: number = 80;
   public moviesSubject: BehaviorSubject<MovieResponse[]>  = new BehaviorSubject<MovieResponse[]>([]);
+  public readonly favouritesKey: string = 'favourites';
 
 
   constructor(private http: HttpClient) {
@@ -29,13 +30,13 @@ export class HomeContentService {
   }
 
   public addFavourite(id: number){
-    const favourites: number[] | null = JSON.parse(localStorage.getItem('favourites') as string);
+    const favourites: number[] | null = JSON.parse(localStorage.getItem(this.favouritesKey) as string);
     if(favourites) {
-      localStorage.removeItem('favourites');
+      localStorage.removeItem(this.favouritesKey);
       favourites.push(id);
-      localStorage.setItem('favourites', JSON.stringify(favourites));
+      localStorage.setItem(this.favouritesKey, JSON.stringify(favourites));
     } else {
-      localStorage.setItem('favourites', JSON.stringify([id]));
+      localStorage.setItem(this.favouritesKey, JSON.stringify([id]));
     }
   }
 }

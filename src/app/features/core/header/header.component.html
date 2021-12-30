@@ -1,9 +1,28 @@
-<div class="nav-bar">
-  <i class="fas fa-globe-americas logo"></i>
-  <h1 class="title">Movies</h1>
-  <button class="header-btn" (click)="onAccount()">
-    <p class="my-account">{{accountBtnFlag ? 'Movies' : 'My Account'}}</p>
-    <i class="fas fa-angle-down angle-down"></i>
-  </button>
+<div class="wrapper">
+  <div class="nav-bar">
+    <i class="fas fa-globe-americas logo"></i>
+    <h1 class="title">Movies</h1>
+    <button type="button"
+            class="header-btn" (click)="dropdownMenuFlag = !dropdownMenuFlag"
+            cdkOverlayOrigin
+            #trigger="cdkOverlayOrigin">
+      <p class="my-account">My Account</p>
+      <i class="fas fa-angle-down angle-down"></i>
+    </button>
+  </div>
 </div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="dropdownMenuFlag || dropdownMenuFocus">
+  <div class="dropdown-menu">
+    <p (click)="onFavourite()">{{!toFavouriteFlag ? 'My favourite' : 'Movies'}}</p>
+    <hr>
+    <p *ngIf="toFavouriteFlag" (click)="onClear()">Clear favourite</p>
+    <hr *ngIf="toFavouriteFlag">
+  </div>
+</ng-template>
+
+
 
