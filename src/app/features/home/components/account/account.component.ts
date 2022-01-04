@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {concatMap, from, map, mergeMap, Observable, of, switchMap, tap, toArray} from "rxjs";
-import {MovieResponse} from "../../../../shared/models/home-content";
+import {concatMap, from, tap, toArray} from "rxjs";
 import {HomeContentService} from "../../../../shared/services/home-content/home-content.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-account',
@@ -10,20 +10,17 @@ import {HomeContentService} from "../../../../shared/services/home-content/home-
 })
 export class AccountComponent implements OnInit {
 
-  public favourites$: Observable<MovieResponse[]> | undefined;
-
-  constructor(public contentService: HomeContentService) { }
+  constructor(public contentService: HomeContentService, public router: Router) { }
 
   ngOnInit(): void {
     const favourites: number[] = JSON.parse(localStorage.getItem(this.contentService.favouritesKey) as string) || [];
-    this.favourites$ = from(favourites).pipe(
+    from(favourites).pipe(
       concatMap(movieId => this.contentService.getMovie(movieId)),
       toArray()
-    );
+    ).subscribe( movies => this.contentService.favourites$.next(movies));
   }
-
-  public onLog(){
-    console.log(this.favourites$);
+  public onMovie(id: number){
+    this.router.navigate(['/movie', id], {queryParams:{mode: 'favourites'}});
   }
 
 }

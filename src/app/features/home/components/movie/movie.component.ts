@@ -20,6 +20,7 @@ export class MovieComponent implements OnInit{
 
   public currentMovie$: Observable<MovieResponse> | undefined;
   public nextPageFlag: boolean = false;
+  public favouriteMode: boolean = false;
   constructor(
     public contentService: HomeContentService,
     public activateRoute: ActivatedRoute,
@@ -28,6 +29,7 @@ export class MovieComponent implements OnInit{
 
   public ngOnInit(): void{
     this.currentMovie$ = this.currMovieInit();
+    this.favouriteMode = !!this.activateRoute.snapshot.queryParams['mode'];
   }
 
   public currMovieInit(): Observable<MovieResponse> {
@@ -54,12 +56,14 @@ export class MovieComponent implements OnInit{
   }
 
   public onNextMovie(): void{
-    let index: number = this.contentService.moviesSubject.value
-      ?.findIndex((movie) => {
+    const movies: MovieResponse[] = this.favouriteMode ?
+                this.contentService.favourites$.value :
+                this.contentService.moviesSubject.value;
+    let index: number = movies?.findIndex((movie) => {
         return  +this.activateRoute.snapshot.params['id'] === movie.id;
       }) ?? -1;
     if(index < 0) return;
-    if(index + 1 === this.contentService.moviesSubject.value?.length) {
+    if(!this.favouriteMode && index + 1 === this.contentService.moviesSubject.value?.length) {
       let page: number = this.contentService.currentPage + 1;
       if(this.contentService.currentPage + 1 > this.contentService.lastPage){
         page = 1;
@@ -68,10 +72,13 @@ export class MovieComponent implements OnInit{
          .subscribe(movies => {
         this.contentService.moviesSubject.next(movies);
         index = 0;
-        this.navigateToNextMovie(index);
+        this.navigateToNextMovie(movies, index);
       });
-    } else{
-      this.navigateToNextMovie(index + 1);
+    } else {
+      if(index + 1 === movies.length){
+        index = -1;
+      }
+      this.navigateToNextMovie(movies, index + 1);
     }
   }
 
@@ -79,10 +86,13 @@ export class MovieComponent implements OnInit{
     this.contentService.addFavourite(+this.activateRoute.snapshot.params['id']);
   }
 
-  public navigateToNextMovie(index: number): void{
+  public navigateToNextMovie(movies: MovieResponse[], index: number): void{
     this.nextPageFlag = true;
-    let nextMovieId: number | undefined = this.contentService.moviesSubject.value[index].id;
-    this.router.navigate(['/movie', nextMovieId],{queryParams:{page: this.contentService.currentPage}});
+    let nextMovieId: number | undefined = movies[index].id;
+    const qParams = !this.favouriteMode ?
+      {page: this.contentService.currentPage} :
+      {mode: this.contentService.favouritesKey};
+    this.router.navigate(['/movie', nextMovieId],{queryParams: qParams});
   }
 
   public onBackToList(): void{

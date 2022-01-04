@@ -8,7 +8,10 @@
       <p class="mobile">Back</p>
     </div>
     <div class="nav-item"
-         [ngStyle]="activateRoute.snapshot.queryParams['page'] ? {'display' : 'flex'} : {'display' : 'none'}"
+         [ngStyle]="activateRoute.snapshot.queryParams['page'] ||
+          activateRoute.snapshot.queryParams['mode']?
+          {'display' : 'flex'} :
+           {'display' : 'none'}"
          (click)="onNextMovie()">
       <p class="desktop">Next Movie</p>
       <p class="mobile">Next</p>

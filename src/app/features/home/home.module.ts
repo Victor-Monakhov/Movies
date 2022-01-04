@@ -5,6 +5,7 @@ import {HomeContentComponent} from "./components/home-content/home-content.compo
 import {HomeContentPaginatorComponent} from "./components/home-content-paginator/home-content-paginator.component";
 import { MovieComponent } from './components/movie/movie.component';
 import { AccountComponent } from './components/account/account.component';
+import {OverlayRef} from "@angular/cdk/overlay";
 
 
 
@@ -19,6 +20,6 @@ import { AccountComponent } from './components/account/account.component';
     CommonModule,
     HomeRoutingModule
   ],
-
+  providers: []
 })
 export class HomeModule { }

@@ -1,6 +1,19 @@
 <h2>My favorite</h2>
 <div class="wrapper">
-    <div *ngFor="let movie of favourites$ | async">
-      <img (click)="onLog()" src="{{'http://image.tmdb.org/t/p/w342' + movie.poster_path}}" alt="">
+    <div class="favourite-movie" *ngFor="let movie of contentService.favourites$ | async">
+      <div class="movie-poster">
+        <img (click)="onMovie(movie.id)" src="{{'http://image.tmdb.org/t/p/w342' + movie.poster_path}}" alt="">
+      </div>
+      <div class="movie-info">
+        <div class="title">
+          <h1>{{movie.title}}</h1>
+          <button type="button" class="un-favourite-btn">
+            <p>Unfavourite</p>
+          </button>
+        </div>
+        <div class="info">
+          <span>{{movie.overview}}</span>
+        </div>
+      </div>
     </div>
 </div>

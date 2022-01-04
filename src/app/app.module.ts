@@ -6,12 +6,16 @@ import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import { HeaderComponent } from './features/core/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {OverlayModule} from "@angular/cdk/overlay";
+import {Overlay, OverlayModule, OverlayRef} from "@angular/cdk/overlay";
+import { DropdownDirective } from './features/core/header/dropdown/dropdown.directive';
+import { DropdownComponent } from './features/core/header/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    DropdownDirective,
+    DropdownComponent
   ],
   imports: [
     HttpClientModule,
