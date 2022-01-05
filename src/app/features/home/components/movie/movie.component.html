@@ -23,8 +23,8 @@
     <div class="movie-poster">
       <img src="{{'http://image.tmdb.org/t/p/w342' + movie?.poster_path}}" alt="movie-poster">
     </div>
-    <button class="to-favourite" (click)="onFavourite()">
-      <p>Add to favourite</p>
+    <button class="to-favourite" (click) = "contentService.onFavourite(movie.id)"  >
+      <p>{{contentService.isFavourite ? 'Remove favourite' : 'Add to favourite'}}</p>
       <i class="fas fa-star"></i>
     </button>
     <ng-container *ngTemplateOutlet="rateReleaseInfo"></ng-container>

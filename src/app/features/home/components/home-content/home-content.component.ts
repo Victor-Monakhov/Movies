@@ -1,7 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HomeContentService} from "../../../../shared/services/home-content/home-content.service";
-import {delay, filter, map, Observable, Subject, switchMap, takeUntil, tap} from "rxjs";
-import {MovieResponse} from "../../../../shared/models/home-content";
+import {HomeContentService, PageInfo} from "../../../../shared/services/home-content/home-content.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -9,33 +7,25 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './home-content.component.html',
   styleUrls: ['./home-content.component.scss']
 })
-export class HomeContentComponent implements OnInit, OnDestroy{
-
-  private destroy$: Subject<void> = new Subject<void>();
+export class HomeContentComponent implements OnInit, OnDestroy {
 
   constructor(public contentService: HomeContentService, public activateRoute: ActivatedRoute, public router: Router) {
   }
 
   public ngOnInit(): void {
-    this.activateRoute.params.pipe(
-      switchMap(params => this.contentService.getContent(params['page'])),
-      takeUntil(this.destroy$)
-    )
-      .subscribe(movies => {
-        this.contentService.moviesSubject.next(movies);
-      });
+    this.contentService.currPage$.next(new PageInfo(this.activateRoute.snapshot.params['page']));
   }
 
-  public ngOnDestroy(){
-    this.destroy$.next();
-    this.destroy$.complete();
+
+  public ngOnDestroy() {
   }
 
-  public setMovies(page: number = 1){
+  public setMovies(page: number = 1) {
+    this.contentService.currPage$.next(new PageInfo(page));
     this.router.navigate(['/list', page]);
   }
 
-  public onMovie(id: number){
-    this.router.navigate(['/movie', id], {queryParams:{page: this.contentService.currentPage}});
+  public onMovie(id: number) {
+    this.router.navigate(['/movie', id], {queryParams: {page: this.contentService.currPage$.value.page}});
   }
 }

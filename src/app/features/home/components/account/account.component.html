@@ -7,7 +7,7 @@
       <div class="movie-info">
         <div class="title">
           <h1>{{movie.title}}</h1>
-          <button type="button" class="un-favourite-btn">
+          <button type="button" class="un-favourite-btn" (click) = "contentService.onFavourite(movie.id)">
             <p>Unfavourite</p>
           </button>
         </div>
