@@ -1,0 +1,41 @@
+@import "src/assets/styles/mixins";
+
+.wrapper {
+  @include media-property(flex-wrap, wrap, wrap, nowrap, nowrap);
+  @include media-property(height, 90px, 90px, 30px, 30px);
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  padding: 20px;
+  height: 30px;
+  font-size: 1rem;
+  margin: 20px 20px 0;
+  bottom: 0;
+
+  .left-buttons, .center-buttons, .right-buttons {
+    @include media-property(width, 100%, 100%, auto, auto);
+    display: flex;
+    justify-content: center;
+  }
+
+  .paginator-btn {
+    display: block;
+    color: #41b899;
+    background-color: #f2f3f5;
+    width: 90px;
+    border: 1px solid #dddee3;
+    cursor: pointer;
+  }
+
+  .disable {
+    color: #adb0b5;
+  }
+
+  .small-btn {
+    @include media-property(width, 30px, 30px);
+  }
+
+  .first-page-btn {
+    font-weight: bold;
+  }
+}

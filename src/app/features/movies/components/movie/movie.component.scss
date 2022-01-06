@@ -1,0 +1,200 @@
+@import "variables.scss";
+@import "animations.scss";
+@import "mixins.scss";
+
+.wrapper {
+  position: relative;
+
+  .background-img {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    filter: blur(10px) brightness(0.5);
+    object-fit: cover;
+  }
+
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      color: #ffffff;
+      cursor: pointer;
+
+      p {
+        @include media-property(opacity, 0.7, 0.7, 0.4, 0.4);
+        font-size: 1.2rem;
+      }
+
+      i {
+        @include media-property(opacity, 1, 1, 0.4, 0.4);
+        font-size: 1.4rem;
+      }
+
+      .mobile {
+        @include media-property(margin, 0 10px, 0 10px, 0 20px, 0 20px);
+        @include media-property(display, block, block, none, none);
+        z-index: 1;
+      }
+
+      .desktop {
+        @include media-property(margin, 0 10px, 0 10px, 0 20px, 0 20px);
+        @include media-property(display, none, none, block, block);
+      }
+    }
+  }
+
+  .movie {
+    @include media-property(flex-wrap, wrap, wrap, nowrap, nowrap);
+    @include media-property(padding, 20px, 20px, 40px, 80px);
+    display: flex;
+    position: relative;
+    padding: 80px;
+
+    .movie-poster {
+      @include media-property(width, 120px, 150px, 200px, 300px);
+      @include media-property(height, 180px, 225px, 300px, 450px);
+      box-shadow: 0 0 6px 2px #000000;
+      flex-shrink: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .to-favourite {
+      @include media-property(top, 20px, 20px, 40px, 80px);
+      @include media-property(right, 20px, 20px, 40px, 80px);
+      @include media-property(opacity, 1, 1, 0.4, 0.4);
+      @include media-property(font-size, 1.7rem, 1.7rem, 1.1rem, 1.1rem);
+      cursor: pointer;
+      position: absolute;
+      border-radius: 5px;
+      background-color: transparent;
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      padding: 5px;
+      z-index: 1;
+
+      p {
+        @include media-property(display, none, none, block, block);
+        margin: 0;
+      }
+
+      i {
+        @include media-property(display, block, block, none, none);
+        font-weight: bold;
+      }
+    }
+
+    .to-favourite:active {
+      border: 1px solid #ffffff;
+    }
+
+    .rate-release-info {
+      @include media-property(display, flex, flex, none, none);
+      @include media-property(flex-direction, column, column, row, row);
+      @include media-property(padding-left, 20px, 20px, 0, 0);
+      @include media-property(align-items, start, start, center, center);
+      color: #ffffff;
+      font-size: 1.2rem;
+
+      .rate-release-item {
+        @include media-property(flex-direction, column, column, row, row);
+        @include media-property(align-items, start, start, center, center);
+        @include media-property(margin-bottom, 30px, 30px, 0, 0);
+        display: flex;
+        flex-wrap: wrap;
+
+        p {
+          @include media-property(margin, 0, 0, 0 20px 0 0, 0 20px 0 0);
+          @include media-property(opacity, 0.7, 0.7, 1, 1);
+        }
+      }
+
+      hr {
+        @include media-property(display, none, none, block, block);
+        margin: 20px;
+        height: 30px;
+        opacity: 0.3;
+      }
+    }
+
+    .movie-info {
+      @include media-property(padding, 40px 0, 40px 0, 0 0 0 50px, 0 0 0 50px);
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      width: 100%;
+      color: #ffffff;
+
+      h1 {
+        @include media-property(margin, 10px 0, 10px 0, 10px 200px 10px 0, 10px 200px 10px 0);
+      }
+
+      .rate-release-info {
+        @include media-property(display, none, none, flex, flex);
+      }
+    }
+
+    .delimiter {
+      width: 100%;
+      opacity: 0.3;
+      margin: 30px 0;
+    }
+
+    small {
+      font-size: 1rem;
+    }
+  }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-100px) translateY(-100px);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 20px solid;
+  animation: loader 2000ms linear 0s infinite normal both;
+}
+
+.temp-background{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  background-color: #474d59;
+  opacity: 0.9;
+}
+
+.temp-poster{
+  width: 100%;
+  height: 100%;
+  .poster{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-30px) translateY(-30px);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 10px solid;
+    animation: loader 2000ms linear 0s infinite normal both;
+  }
+}
+
+

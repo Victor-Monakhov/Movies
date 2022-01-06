@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <div class="left-buttons">
+    <button class="paginator-btn" (click)="onFirst()">First</button>
+    <button class="paginator-btn disable" (click)="onPrev()">Prev</button>
+  </div>
+  <div class="center-buttons">
+    <button class="paginator-btn small-btn disable" (click)="onWatchLeft()">...</button>
+    <button
+      *ngFor="let page of pageButtons;"
+      class="paginator-btn small-btn"
+      [ngClass]="{'first-page-btn': page === currentPage, 'disable': page !== currentPage}"
+      (click)="onPageBtn(page)">
+      {{page}}
+    </button>
+    <button class="paginator-btn small-btn disable" (click)="onWatchRight()">...</button>
+  </div>
+  <div class="right-buttons">
+    <button class="paginator-btn disable" (click)="onNext()">Next</button>
+    <button class="paginator-btn" (click)="onLast()">Last</button>
+  </div>
+</div>

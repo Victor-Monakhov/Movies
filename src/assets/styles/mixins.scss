@@ -1,11 +1,6 @@
 @import "variables.scss";
-@mixin media-property ($screen_width, $property,  $value){
-  @media screen and (max-width: $screen_width) {
-    #{$property}: $value;
-  }
-}
 
-@mixin media-size ($property, $value-xs, $value-sm: 0%, $value-md: 0%, $value-lg: 0%){
+@mixin media-property($property, $value-xs, $value-sm: 0%, $value-md: 0%, $value-lg: 0%){
   @if($value-sm == 0%){
     @media screen and (min-width: $xs) {  #{$property}: $value-xs; }
   }@else if($value-md == 0%){

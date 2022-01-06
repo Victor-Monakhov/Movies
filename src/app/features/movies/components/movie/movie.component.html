@@ -1,0 +1,70 @@
+<div class="wrapper" *ngIf="!nextPageFlag && (currentMovie$ | async) as movie; else loader">
+  <img *ngIf="movie.backdrop_path; else background"
+    class="background-img"
+       src="{{'http://image.tmdb.org/t/p/w342' + movie?.backdrop_path}}"
+       alt="backdrop-img">
+  <div class="navigation">
+    <div class="nav-item" (click)="onBackToList()">
+      <i class="fas fa-chevron-circle-left desktop"></i>
+      <i class="fas fa-angle-left mobile"></i>
+      <p class="desktop">Back to list</p>
+      <p class="mobile">Back</p>
+    </div>
+    <div class="nav-item"
+         [ngStyle]="activateRoute.snapshot.queryParams['page'] ||
+          activateRoute.snapshot.queryParams['mode']?
+          {'display' : 'flex'} :
+           {'display' : 'none'}"
+         (click)="onNextMovie()">
+      <p class="desktop">Next Movie</p>
+      <p class="mobile">Next</p>
+      <i class="fas fa-chevron-circle-right desktop"></i>
+      <i class="fas fa-angle-right mobile"></i>
+    </div>
+  </div>
+  <div class="movie">
+    <div class="movie-poster">
+      <img *ngIf="movie.poster_path; else poster"
+        src="{{'http://image.tmdb.org/t/p/w342' + movie?.poster_path}}" alt="movie-poster">
+    </div>
+    <button class="to-favourite" (click)="contentService.onFavourite(movie.id)">
+      <p>{{contentService.isFavourite ? 'Remove favourite' : 'Add to favourite'}}</p>
+      <i class="fas fa-star"></i>
+    </button>
+    <ng-container *ngTemplateOutlet="rateReleaseInfo"></ng-container>
+    <div class="movie-info">
+      <h1>{{movie?.title + ' '}}({{movie.release_date | date : 'y'}})</h1>
+      <ng-container *ngTemplateOutlet="rateReleaseInfo"></ng-container>
+      <hr class="delimiter">
+      <small>{{movie?.overview}}</small>
+      <hr class="delimiter">
+    </div>
+  </div>
+
+  <ng-template #rateReleaseInfo>
+    <div class="rate-release-info">
+      <div class="rate-release-item"><p>Score:</p><strong>{{movie.vote_average}}</strong></div>
+      <hr>
+      <div class="rate-release-item"><p>Rating:</p><strong>{{movie.adult ? 'R' : 'PG'}}</strong></div>
+      <hr>
+      <div class="rate-release-item"><p>Release Date:</p><strong>{{movie.release_date | date}}</strong></div>
+    </div>
+  </ng-template>
+
+</div>
+
+<ng-template #loader>
+  <div class="loader">Loading...</div>
+</ng-template>
+
+<ng-template #poster>
+  <div class="temp-poster">
+    <div class="poster"></div>
+  </div>
+</ng-template>
+
+<ng-template #background>
+  <div class="temp-background"></div>
+</ng-template>
+
+
